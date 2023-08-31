@@ -22,7 +22,7 @@ const controls = [
 ];
 
 const App = () => {
-  const [qualities, setQualities] = useState<number[]>([]);
+  const [qualities, setQualities] = useState<number[]>([1080, 720]);
   const ref = useRef<APITypes>(null);
   const supported = Hls.isSupported();
   const hls = new Hls();
@@ -34,23 +34,18 @@ const App = () => {
     hls.attachMedia(video);
     window.hls = hls;
 
-    hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      // console.log(window.hls.levels);
-      // console.log(hls.levels.map((level) => level.height));
-      console.log(hls.levels.map((level) => level.height));
-      const test = hls.levels.map((level) => level.height);
-      if (JSON.stringify(test) !== JSON.stringify(qualities)) {
-        setQualities(hls.levels.map((level) => level.height));
-      }
-    });
+    // hls.on(Hls.Events.MANIFEST_PARSED, () => {
+    //   setQualities(hls.levels.map((level) => level.height));
+    // });
   }, []);
 
-  useEffect(() => {
-    const video = document.getElementById('player') as HTMLVideoElement;
-    // hls.loadSource('https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8');
-    hls.loadSource('https://video.metaserv.vn:444/hls/31082023/costa-rica,-720p.mp4,.mp4,.urlset/master.m3u8');
-    hls.attachMedia(video);
-  }, [qualities]);
+  // useEffect(() => {
+  //   // const video = document.getElementById('player') as HTMLVideoElement;
+  //   hls.startLoad();
+  //   // hls.loadSource('https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8');
+  //   // hls.loadSource('https://video.metaserv.vn:444/hls/31082023/costa-rica,-720p.mp4,.mp4,.urlset/master.m3u8');
+  //   // hls.attachMedia(video);
+  // }, [qualities]);
 
   const onChangeQuality = (newQuality: number) => {
     if (!window.hls) {
